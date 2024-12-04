@@ -14,7 +14,7 @@ class NoticiasSlideshow extends StatelessWidget {
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
       ),
-      child: const NoticiasCard(), // Aquí usamos el widget de la tarjeta
+      child: const NoticiasCard(), // Usamos el widget de la tarjeta ajustada
     );
   }
 }
