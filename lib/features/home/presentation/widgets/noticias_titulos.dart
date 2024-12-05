@@ -1,44 +1,42 @@
 import 'package:flutter/material.dart';
 
 class NoticiasTitulos extends StatelessWidget {
-  const NoticiasTitulos({Key? key}) : super(key: key);
+  final String titulo;
+  final String subtitulo;
+
+  const NoticiasTitulos({
+    Key? key,
+    required this.titulo,
+    required this.subtitulo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 15,
-      left: 15,
-      right: 15,
-      child: SizedBox(
-        width: 375 * 0.75, // 75% del ancho
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            // Título
-            Text(
-              'La OSUACH con la UTEP',
-              style: TextStyle(
-                fontFamily: 'Dela Gothic One',
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-                height: 1.2,
-                color: Colors.white,
-              ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, top: 15), // Márgenes internos
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            titulo,
+            style: const TextStyle(
+              fontFamily: 'Dela Gothic One',
+              fontSize: 15,
+              height: 1.2, // Line height proporcional
+              color: Colors.white,
             ),
-            SizedBox(height: 8), // Espaciado entre textos
-            // Subtítulo
-            Text(
-              'Symphony Orchestra en Chihuahua',
-              style: TextStyle(
-                fontFamily: 'Dela Gothic One',
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-                height: 1.2,
-                color: Colors.white,
-              ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            subtitulo,
+            style: const TextStyle(
+              fontFamily: 'Dela Gothic One',
+              fontSize: 15,
+              height: 1.2,
+              color: Colors.white,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
