@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
 class TextoSlideshow extends StatelessWidget {
-  const TextoSlideshow({super.key});
+  final String tituloEvento;
+  final String fecha;
+  final String descripcion;
+
+  const TextoSlideshow({
+    Key? key,
+    required this.tituloEvento,
+    required this.fecha,
+    required this.descripcion,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,37 +20,32 @@ class TextoSlideshow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Título del evento
-          const Text(
-            "Música entre dos naciones hermanas",
-            style: TextStyle(
+          Text(
+            tituloEvento,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           ),
           const SizedBox(height: 5),
-          // Fecha del evento
-          const Text(
-            "UACH / Noviembre 28, 2024",
+          // Fecha
+          Text(
+            fecha,
             style: TextStyle(
               fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.grey,
+              color: Colors.grey[600],
             ),
           ),
           const SizedBox(height: 10),
-          // Descripción del evento
-          const Text(
-            "La Orquesta Sinfónica de la Universidad Autónoma de Chihuahua (UACH), en colaboración con la Orquesta Sinfónica de la Universidad de Texas en El Paso (UTEP), se enorgullecen en anunciar un magno concierto de gala que reafirma el poder de la música como vehículo de unión entre dos naciones.",
-            style: TextStyle(
+          // Descripción
+          Text(
+            descripcion,
+            style: const TextStyle(
               fontSize: 14,
-              fontWeight: FontWeight.w400,
-              height: 1.4, // Altura de línea
-              color: Colors.black87,
+              color: Colors.black,
             ),
-            textAlign: TextAlign.justify,
           ),
-          const SizedBox(height: 15), // Espaciado antes de los indicadores
         ],
       ),
     );
