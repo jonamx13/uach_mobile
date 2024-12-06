@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../data/noticias_data.dart'; // Importamos los datos
+import '../../data/noticias_data.dart';
 import 'noticias_slide.dart';
+import 'noticias_indicadores.dart'; // Importamos el nuevo widget
 
 class NoticiasSlideshow extends StatefulWidget {
   @override
@@ -23,15 +24,15 @@ class _NoticiasSlideshowState extends State<NoticiasSlideshow> {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
         children: [
-          // Sección deslizable con diseño original
+          // Sección deslizable
           SizedBox(
-            height: 400, // Ajusta la altura según necesites
+            height: 400,
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: _onPageChanged,
-              itemCount: noticias.length, // Número dinámico de slides
+              itemCount: noticias.length,
               itemBuilder: (context, index) {
-                final noticia = noticias[index]; // Extraemos cada noticia
+                final noticia = noticias[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: NoticiasSlide(
@@ -47,22 +48,10 @@ class _NoticiasSlideshowState extends State<NoticiasSlideshow> {
             ),
           ),
           const SizedBox(height: 10),
-          // Indicadores dinámicos
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              noticias.length, // Indicadores según el número de noticias
-              (index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: CircleAvatar(
-                    radius: 6,
-                    backgroundColor:
-                        _currentIndex == index ? Colors.black : Colors.grey,
-                  ),
-                );
-              },
-            ),
+          // Indicadores dinámicos usando el nuevo widget
+          NoticiasIndicadores(
+            totalIndicadores: noticias.length,
+            indicadorActivo: _currentIndex,
           ),
         ],
       ),
