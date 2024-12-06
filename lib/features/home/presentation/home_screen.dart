@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'widgets/noticias_slideshow.dart';
+import 'widgets/noticias_slideshow/noticias_slideshow.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

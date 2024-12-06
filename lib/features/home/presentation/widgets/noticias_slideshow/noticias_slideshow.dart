@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data/noticias_data.dart'; // Importamos los datos
+import '../../data/noticias_data.dart'; // Importamos los datos
 import 'noticias_slide.dart';
 
 class NoticiasSlideshow extends StatefulWidget {
