@@ -5,6 +5,7 @@ import '../../features/explorar/presentation/explorar_screen.dart';
 import '../../features/reporte/presentation/reporte_screen.dart';
 import '../../features/user/presentation/user_overlay.dart';
 import '../widgets/bottom_nav_bar.dart';
+import '../utils/screen_utils.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -32,52 +33,47 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _onItemSelected(int index) {
-  // Evitar animación si ya estamos en la pantalla seleccionada
-  if (index == _currentIndex) {
-    return;
-  }
+    if (index == _currentIndex) return; // No hacer nada si es la misma pantalla
+    if (index == 4) {
+      showUserOverlay(context); // Mostrar overlay para el botón "Usuario"
+      return;
+    }
 
-  if (index == 4) {
-    showUserOverlay(context); // Mostrar el overlay para "Usuario"
-    return;
-  }
+    bool isForward = index > _currentIndex;
 
-  // Determinar la dirección de la animación
-  bool isForward = index > _currentIndex;
-
-  setState(() {
-    // Configurar las pantallas visibles según la dirección
-    _visibleScreens = isForward
-        ? [_allScreens[_currentIndex], _allScreens[index]] // De izquierda a derecha
-        : [_allScreens[index], _allScreens[_currentIndex]]; // De derecha a izquierda
-  });
-
-  // Ajustar el controlador para empezar en la posición correcta
-  _pageController.jumpToPage(isForward ? 0 : 1);
-
-  // Iniciar la animación
-  _pageController
-      .animateToPage(
-        isForward ? 1 : 0,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      )
-      .then((_) {
-    // Tras la animación, actualizar el estado y restaurar las pantallas
     setState(() {
-      _currentIndex = index;
-      _visibleScreens = [_allScreens[_currentIndex]]; // Mostrar solo la pantalla destino
-      _pageController.jumpToPage(0); // Asegurar estado final
+      _visibleScreens = isForward
+          ? [_allScreens[_currentIndex], _allScreens[index]]
+          : [_allScreens[index], _allScreens[_currentIndex]];
     });
-  });
-}
+
+    _pageController.jumpToPage(isForward ? 0 : 1);
+
+    _pageController
+        .animateToPage(
+          isForward ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        )
+        .then((_) {
+      setState(() {
+        _currentIndex = index;
+        _visibleScreens = [_allScreens[_currentIndex]];
+        _pageController.jumpToPage(0);
+      });
+    });
+  }
+
+  double getVisibleHeight(BuildContext context, {required int bottomNavBarHeight}) {
+  return getVisibleHeight(context, bottomNavBarHeight: 72); // Usa la función compartida
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView.builder(
         controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(), // Deshabilitar swipe manual
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: _visibleScreens.length,
         itemBuilder: (context, index) => _visibleScreens[index],
       ),

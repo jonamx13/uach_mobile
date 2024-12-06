@@ -22,7 +22,7 @@ class BottomNavBar extends StatelessWidget {
 
     return Container(
       height: 72, // Altura de la barra
-      color: const Color(0xCC10130B), // Color con 80% de opacidad
+      color: const Color(0xCC10130B), // Color con opacidad
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: items.asMap().entries.map((entry) {
@@ -40,8 +40,8 @@ class BottomNavBar extends StatelessWidget {
                   item['icon'],
                   size: 24,
                   color: isSelected
-                      ? Colors.white // Color activo
-                      : const Color(0xFF7E7F7D), // Color inactivo
+                      ? Colors.white
+                      : const Color(0xFF7E7F7D),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -51,8 +51,8 @@ class BottomNavBar extends StatelessWidget {
                     fontWeight: FontWeight.w900,
                     fontSize: 10,
                     color: isSelected
-                        ? Colors.white // Color activo
-                        : const Color(0xFF7E7F7D), // Color inactivo
+                        ? Colors.white
+                        : const Color(0xFF7E7F7D),
                   ),
                 ),
               ],
