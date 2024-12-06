@@ -58,6 +58,7 @@ flutter:
   # Para añadir recursos, asegúrate de respetar la indentación
   assets:
     - assets/images/osuach-utep-8dic-1920.jpg
+    - assets/images/Santie_05.jpg
 
 
 
