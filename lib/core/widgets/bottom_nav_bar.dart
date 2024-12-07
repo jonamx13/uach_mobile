@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../features/user/presentation/user_overlay.dart'; // Asegúrate de que este import esté presente
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -27,7 +26,7 @@ class BottomNavBar extends StatelessWidget {
 
     return Container(
       height: 72,
-      color: const Color(0xCC10130B),
+      color: const Color(0xFF463868),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: items.asMap().entries.map((entry) {

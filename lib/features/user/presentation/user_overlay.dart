@@ -58,7 +58,7 @@ class _UserOverlayState extends State<UserOverlay> with TickerProviderStateMixin
           child: GestureDetector(
             onTap: _dismissOverlay, // Cierra al tocar el fondo con animación inversa
             child: Container(
-              color: const Color(0xFF8B41BD).withOpacity(0.5), // Fondo negro con opacidad del 50%
+              color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5), // Fondo negro con opacidad del 50%
               padding: const EdgeInsets.symmetric(horizontal: 20), // Padding lateral
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
