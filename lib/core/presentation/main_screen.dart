@@ -5,7 +5,6 @@ import '../../features/explorar/presentation/explorar_screen.dart';
 import '../../features/reporte/presentation/reporte_screen.dart';
 import '../../features/user/presentation/user_overlay.dart';
 import '../widgets/bottom_nav_bar.dart';
-import '../utils/screen_utils.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -15,6 +14,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
+  bool _isOverlayVisible = false; // Para controlar la visibilidad del overlay
 
   final List<Widget> _allScreens = [
     HomeScreen(),
@@ -33,9 +33,12 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _onItemSelected(int index) {
-    if (index == _currentIndex) return; // No hacer nada si es la misma pantalla
+    if (index == _currentIndex) return;
+
     if (index == 4) {
-      showUserOverlay(context); // Mostrar overlay para el botón "Usuario"
+      setState(() {
+        _isOverlayVisible = true;
+      });
       return;
     }
 
@@ -49,13 +52,11 @@ class _MainScreenState extends State<MainScreen> {
 
     _pageController.jumpToPage(isForward ? 0 : 1);
 
-    _pageController
-        .animateToPage(
-          isForward ? 1 : 0,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        )
-        .then((_) {
+    _pageController.animateToPage(
+      isForward ? 1 : 0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    ).then((_) {
       setState(() {
         _currentIndex = index;
         _visibleScreens = [_allScreens[_currentIndex]];
@@ -64,22 +65,32 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  double getVisibleHeight(BuildContext context, {required int bottomNavBarHeight}) {
-  return getVisibleHeight(context, bottomNavBarHeight: 72); // Usa la función compartida
+  void _hideOverlay() {
+    setState(() {
+      _isOverlayVisible = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView.builder(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: _visibleScreens.length,
-        itemBuilder: (context, index) => _visibleScreens[index],
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _visibleScreens.length,
+            itemBuilder: (context, index) => _visibleScreens[index],
+          ),
+          if (_isOverlayVisible)
+            UserOverlay(onDismiss: _hideOverlay), // Mostrar overlay solo cuando sea necesario
+        ],
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onItemSelected: _onItemSelected,
+        isOverlayVisible: _isOverlayVisible,
+        onDismissOverlay: _hideOverlay, // Pasa la función para cerrar el overlay
       ),
     );
   }

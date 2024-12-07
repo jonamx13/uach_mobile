@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import '../../features/user/presentation/user_overlay.dart'; // Asegúrate de que este import esté presente
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onItemSelected;
+  final bool isOverlayVisible;
+  final VoidCallback onDismissOverlay;
 
   const BottomNavBar({
     Key? key,
     required this.currentIndex,
     required this.onItemSelected,
+    required this.isOverlayVisible,
+    required this.onDismissOverlay,
   }) : super(key: key);
 
   @override
@@ -21,8 +26,8 @@ class BottomNavBar extends StatelessWidget {
     ];
 
     return Container(
-      height: 72, // Altura de la barra
-      color: const Color(0xCC10130B), // Color con opacidad
+      height: 72,
+      color: const Color(0xCC10130B),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: items.asMap().entries.map((entry) {

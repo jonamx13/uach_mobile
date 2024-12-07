@@ -1,104 +1,95 @@
 import 'package:flutter/material.dart';
+import 'overlay_button.dart';
 
-void showUserOverlay(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true, // Permitir ajuste dinámico de tamaño
-    backgroundColor: Colors.transparent, // Fondo transparente
-    builder: (context) {
-      final mediaQuery = MediaQuery.of(context);
-      final bottomNavBarHeight = 72.0; // Altura del BottomNavBar personalizado (ajústala si varía)
-      final overlayHeight = mediaQuery.size.height -
-          mediaQuery.padding.top - // Espacio seguro superior
-          bottomNavBarHeight; // Altura del BottomNavBar
+class UserOverlay extends StatefulWidget {
+  final VoidCallback onDismiss;
 
-      return GestureDetector(
-        onTap: () => Navigator.pop(context), // Cerrar el overlay al hacer tap fuera
-        child: Stack(
-          children: [
-            // Fondo con modo de fusión multiply
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                width: double.infinity,
-                height: overlayHeight, // Respetar el espacio del BottomNavBar
-                decoration: BoxDecoration(
-                  color: const Color(0xFFB5ADBA).withOpacity(0.8),
-                ),
-                child: ColorFiltered(
-                  colorFilter: const ColorFilter.mode(
-                    Colors.black,
-                    BlendMode.multiply,
-                  ),
-                  child: Container(),
-                ),
-              ),
-            ),
-            // Botones alineados al fondo del overlay
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16), // Margen interior
-                child: GestureDetector(
-                  onTap: () {}, // Absorber taps en los botones
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildButton(context, "SEGA"),
-                      _buildButton(context, "PAGOS"),
-                      _buildButton(context, "CAMPUS VIRTUAL"),
-                      _buildButton(context, "TRÁMITES"),
-                      _buildFlatButton(context, "CERRAR"),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    },
-  );
+  const UserOverlay({Key? key, required this.onDismiss}) : super(key: key);
+
+  @override
+  _UserOverlayState createState() => _UserOverlayState();
 }
 
-Widget _buildButton(BuildContext context, String text) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-      ),
-      onPressed: () {
-        // Acción del botón
-      },
-      child: Text(
-        text,
-        style: const TextStyle(color: Colors.black, fontSize: 16),
-      ),
-    ),
-  );
-}
+class _UserOverlayState extends State<UserOverlay> with TickerProviderStateMixin {
+  late AnimationController _fadeController;
+  late Animation<double> _fadeAnimation;
 
-Widget _buildFlatButton(BuildContext context, String text) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        shape: const RoundedRectangleBorder(), // Sin bordes redondeados
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+  @override
+  void initState() {
+    super.initState();
+    // Crear controlador de animación
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+    );
+
+    // Crear animación de opacidad, con valores de 0 a 1
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _fadeController,
+        curve: Curves.easeInOut,
       ),
-      onPressed: () {
-        // Acción del botón
+    );
+
+    // Iniciar la animación para mostrar el overlay
+    _fadeController.forward();
+  }
+
+  @override
+  void dispose() {
+    _fadeController.dispose();
+    super.dispose();
+  }
+
+  // Método para manejar el cierre del overlay con animación inversa
+  void _dismissOverlay() {
+    _fadeController.reverse().then((_) {
+      widget.onDismiss(); // Llamar al onDismiss solo después de la animación de cierre
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _fadeAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _fadeAnimation.value, // Aplica la animación de opacidad
+          child: GestureDetector(
+            onTap: _dismissOverlay, // Cierra al tocar el fondo con animación inversa
+            child: Container(
+              color: const Color(0xFF8B41BD).withOpacity(0.5), // Fondo negro con opacidad del 50%
+              padding: const EdgeInsets.symmetric(horizontal: 20), // Padding lateral
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  OverlayButton(
+                    label: "SEGA",
+                    onPressed: () {},
+                  ),
+                  OverlayButton(
+                    label: "PAGOS",
+                    onPressed: () {},
+                  ),
+                  OverlayButton(
+                    label: "CAMPUS VIRTUAL",
+                    onPressed: () {},
+                  ),
+                  OverlayButton(
+                    label: "TRÁMITES",
+                    onPressed: () {},
+                  ),
+                  OverlayButton(
+                    label: "CERRAR",
+                    onPressed: _dismissOverlay, // Usar el método para cerrar
+                    isCerrar: true, // Botón "CERRAR"
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
       },
-      child: Text(
-        text,
-        style: const TextStyle(color: Colors.black, fontSize: 16),
-      ),
-    ),
-  );
+    );
+  }
 }
