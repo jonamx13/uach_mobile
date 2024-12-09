@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uach_mobile/features/home/presentation/widgets/proximos%20eventos/proximos_eventos.dart';
 import 'widgets/noticias_slideshow/noticias_slideshow.dart';
 import 'widgets/Bienvenida_Old/homescreen_header_old.dart';
 import 'widgets/Bienvenida_New/homescreen_header_new.dart';
@@ -23,8 +24,9 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(height: screenHeight * 15 / 812), // Separador
                   NoticiasSlideshow(), // Slideshow de noticias
                   SizedBox(height: screenHeight * 15 / 812), // Separador
+                  ProximosEventos(),
                   // "Próximos Eventos"
-                  for (int i = 0; i < 15; i++) 
+                  /* for (int i = 0; i < 15; i++) 
                     Container(
                       margin: EdgeInsets.all(screenHeight * 15 / 812),
                       decoration: BoxDecoration(
@@ -48,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
+                    ), */
                 ],
               ),
             ),
