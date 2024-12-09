@@ -11,6 +11,7 @@ class HomeScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Color(0xFFF0F6FD),
       body: SafeArea(
         child: Stack(
           children: [
@@ -27,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.all(screenHeight * 15 / 812),
                       decoration: BoxDecoration(
-                        color: Color(0xFFF0F6FD),
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.1),

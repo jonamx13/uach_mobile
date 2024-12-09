@@ -20,40 +20,52 @@ class _NoticiasSlideshowState extends State<NoticiasSlideshow> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Column(
-        children: [
-          // Sección deslizable
-          SizedBox(
-            height: 400,
-            child: PageView.builder(
-              controller: _pageController,
-              onPageChanged: _onPageChanged,
-              itemCount: noticias.length,
-              itemBuilder: (context, index) {
-                final noticia = noticias[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: NoticiasSlide(
-                    imagen: noticia['imagen']!,
-                    titulo: noticia['titulo']!,
-                    subtitulo: noticia['subtitulo']!,
-                    tituloEvento: noticia['tituloEvento']!,
-                    fecha: noticia['fecha']!,
-                    descripcion: noticia['descripcion']!,
-                  ),
-                );
-              },
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: const Offset(0, 0),
+            blurRadius: 3,
+          )
+        ]
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(7.5, 15, 7.5, 7.5),
+        child: Column(
+          children: [
+            // Sección deslizable
+            SizedBox(
+              height: 400,
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: _onPageChanged,
+                itemCount: noticias.length,
+                itemBuilder: (context, index) {
+                  final noticia = noticias[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: NoticiasSlide(
+                      imagen: noticia['imagen']!,
+                      titulo: noticia['titulo']!,
+                      subtitulo: noticia['subtitulo']!,
+                      tituloEvento: noticia['tituloEvento']!,
+                      fecha: noticia['fecha']!,
+                      descripcion: noticia['descripcion']!,
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          // Indicadores dinámicos usando el nuevo widget
-          NoticiasIndicadores(
-            totalIndicadores: noticias.length,
-            indicadorActivo: _currentIndex,
-          ),
-        ],
+            const SizedBox(height: 10),
+            // Indicadores dinámicos usando el nuevo widget
+            NoticiasIndicadores(
+              totalIndicadores: noticias.length,
+              indicadorActivo: _currentIndex,
+            ),
+          ],
+        ),
       ),
     );
   }
