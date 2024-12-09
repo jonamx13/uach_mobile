@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'bienvenida_alumno.dart';
 
-class BienvenidaHomeScreen extends StatelessWidget {
-  const BienvenidaHomeScreen({Key? key}) : super(key: key);
+class BienvenidaHomeScreenOld extends StatelessWidget {
+  const BienvenidaHomeScreenOld({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
