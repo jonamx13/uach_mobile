@@ -36,10 +36,16 @@ class _MainScreenState extends State<MainScreen> {
     if (index == _currentIndex) return;
 
     if (index == 4) {
+      // Si seleccionamos el botón de usuario, mostramos el overlay
       setState(() {
         _isOverlayVisible = true;
       });
       return;
+    }
+
+    // Cuando se hace tap en cualquier otro botón, ocultamos el overlay
+    if (_isOverlayVisible) {
+      _hideOverlay();
     }
 
     bool isForward = index > _currentIndex;
