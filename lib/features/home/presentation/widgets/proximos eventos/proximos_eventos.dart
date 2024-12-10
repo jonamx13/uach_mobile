@@ -13,19 +13,26 @@ class ProximosEventos extends StatefulWidget {
 }
 
 class _ProximosEventosState extends State<ProximosEventos> {
-  bool _isButton1Active = true;
-  bool _isButton2Active = false;
+  // Estados para los tres botones
+  bool _isButton1Active = false; // Deportivos
+  bool _isButton2Active = true;  // Artístico (por defecto activo)
+  bool _isButton3Active = false; // Científico-filosófico
 
   void _toggleButton(int buttonIndex) {
     setState(() {
       _isButton1Active = buttonIndex == 1;
       _isButton2Active = buttonIndex == 2;
+      _isButton3Active = buttonIndex == 3;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final eventos = _isButton1Active ? calendarioData : noticias;
+    final eventos = _isButton1Active
+        ? calendarioData // Datos para "Deportivos"
+        : _isButton2Active
+            ? noticias // Datos para "Artístico"
+            : calendarioData; // Datos para "Científico-filosófico" (actualiza según corresponda)
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15), // Padding horizontal
@@ -66,9 +73,9 @@ class _ProximosEventosState extends State<ProximosEventos> {
               ButtonProximosEventos(
                 isActive: _isButton1Active,
                 iconPath: _isButton1Active
-                    ? 'assets/icons/calendar_Active.svg'
-                    : 'assets/icons/calendar_Inactive.svg', // Cambio dinámico
-                text: 'Calendario',
+                    ? 'assets/icons/sports_Active.svg'
+                    : 'assets/icons/sports_Inactive.svg',
+                text: 'Deportivos',
                 onTap: () => _toggleButton(1),
               ),
               const SizedBox(width: 20),
@@ -76,9 +83,18 @@ class _ProximosEventosState extends State<ProximosEventos> {
                 isActive: _isButton2Active,
                 iconPath: _isButton2Active
                     ? 'assets/icons/quaver_Active.svg'
-                    : 'assets/icons/quaver_Inactive.svg', // Cambio dinámico
-                text: 'Eventos',
+                    : 'assets/icons/quaver_Inactive.svg',
+                text: 'Artístico',
                 onTap: () => _toggleButton(2),
+              ),
+              const SizedBox(width: 20),
+              ButtonProximosEventos(
+                isActive: _isButton3Active,
+                iconPath: _isButton3Active
+                    ? 'assets/icons/science_Active.svg'
+                    : 'assets/icons/science_Inactive.svg',
+                text: 'Científico-filosófico',
+                onTap: () => _toggleButton(3),
               ),
             ],
           ),
@@ -89,20 +105,28 @@ class _ProximosEventosState extends State<ProximosEventos> {
             itemBuilder: (context, index) {
               final evento = eventos[index];
               if (_isButton1Active) {
-                // Modo Calendario
+                // Modo Deportivos
                 return DateCard(
                   fecha: evento["fechaCalendario"]!,
                   titulo: evento["tituloCalendario"]!,
                   hora: null, // Sin hora
                   lugar: null, // Sin lugar
                 );
-              } else {
-                // Modo Eventos
+              } else if (_isButton2Active) {
+                // Modo Artístico
                 return DateCard(
                   fecha: evento["fechaDateCard"]!,
                   titulo: evento["titulo"]!,
                   hora: evento["hora"]!,
                   lugar: evento["lugar"]!,
+                );
+              } else {
+                // Modo Científico-filosófico (actualiza datos si cambian)
+                return DateCard(
+                  fecha: evento["fechaCalendario"]!,
+                  titulo: evento["tituloCalendario"]!,
+                  hora: null, // Ejemplo: Añadir hora si aplica
+                  lugar: null, // Ejemplo: Añadir lugar si aplica
                 );
               }
             },
