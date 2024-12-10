@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'button_proximos_eventos.dart';
+import 'date_card.dart';
+import '../../data/noticias_data.dart';
+import '../../data/calendario_data.dart';
 
 class ProximosEventos extends StatefulWidget {
   const ProximosEventos({Key? key}) : super(key: key);
@@ -17,52 +20,46 @@ class _ProximosEventosState extends State<ProximosEventos> {
       _isButton1Active = buttonIndex == 1;
       _isButton2Active = buttonIndex == 2;
     });
-    debugPrint('Botón activo: ${buttonIndex == 1 ? "Calend" : "Eventos"}');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Tus próximos eventos',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+    final eventos = _isButton1Active ? calendarioData : noticias;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15), // Padding horizontal
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Tus próximos eventos',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
-                Container(
-                  width: 37,
-                  height: 37,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF8B41BD),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.notifications,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+              ),
+              Container(
+                width: 37,
+                height: 37,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF8B41BD),
+                  shape: BoxShape.circle,
                 ),
-              ],
-            ),
-            const SizedBox(height: 50), // Espaciado ajustado para botones
-          ],
-        ),
-        Positioned(
-          top: 35,
-          left: 0,
-          right: 0,
-          child: Row(
+                child: const Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20), // Espaciado entre título y botones
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ButtonProximosEventos(
@@ -80,8 +77,33 @@ class _ProximosEventosState extends State<ProximosEventos> {
               ),
             ],
           ),
-        ),
-      ],
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(), // Desactiva scroll interno
+            shrinkWrap: true, // Ajusta el tamaño al contenido
+            itemCount: eventos.length,
+            itemBuilder: (context, index) {
+              final evento = eventos[index];
+              if (_isButton1Active) {
+                // Modo Calendario
+                return DateCard(
+                  fecha: evento["fechaCalendario"]!,
+                  titulo: evento["tituloCalendario"]!,
+                  hora: null, // Sin hora
+                  lugar: null, // Sin lugar
+                );
+              } else {
+                // Modo Eventos
+                return DateCard(
+                  fecha: evento["fechaDateCard"]!,
+                  titulo: evento["titulo"]!,
+                  hora: evento["hora"]!,
+                  lugar: evento["lugar"]!,
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }

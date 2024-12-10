@@ -25,32 +25,6 @@ class HomeScreen extends StatelessWidget {
                   NoticiasSlideshow(), // Slideshow de noticias
                   SizedBox(height: screenHeight * 15 / 812), // Separador
                   ProximosEventos(),
-                  // "Próximos Eventos"
-                  /* for (int i = 0; i < 15; i++) 
-                    Container(
-                      margin: EdgeInsets.all(screenHeight * 15 / 812),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            offset: const Offset(0, 4),
-                            blurRadius: 6,
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Próximos Eventos (Placeholder) ${i + 1}',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ), */
                 ],
               ),
             ),

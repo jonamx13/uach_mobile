@@ -5,36 +5,52 @@
     'titulo': 'La OSUACH con la UTEP_1',
     'subtitulo': 'Symphony Orchestra en Chihuahua',
     'tituloEvento': 'Música entre dos naciones hermanas',
-    'fecha': 'UACH / Noviembre 28, 2024',
+    'fechaNews': 'UACH / Noviembre 28, 2024',
+    'fechaDateCard' : 'Martes, 3 de Diciembre',
+    'hora': '21:00 horas',
+    'lugar' : 'Teatro de los Héroes',
     'descripcion':
         'La Orquesta Sinfónica de la Universidad Autónoma de Chihuahua (UACH), en colaboración con la Orquesta Sinfónica de la Universidad de Texas en El Paso (UTEP), se enorgullecen en anunciar un magno concierto de gala que reafirma el poder de la música como vehículo de unión entre dos naciones.',
     },
+
     {
     'imagen': 'assets/images/osuach-utep-8dic-1920.jpg',
     'titulo': 'La OSUACH con la UTEP_2',
     'subtitulo': 'Symphony Orchestra en Chihuahua',
     'tituloEvento': 'Música entre dos naciones hermanas',
-    'fecha': 'UACH / Noviembre 28, 2024',
+    'fechaNews': 'UACH / Noviembre 28, 2024',
+    'fechaDateCard' : 'Martes, 3 de Diciembre',
+    'hora': '21:00 horas',
+    'lugar' : 'Teatro de los Héroes',
     'descripcion':
         'La Orquesta Sinfónica de la Universidad Autónoma de Chihuahua (UACH), en colaboración con la Orquesta Sinfónica de la Universidad de Texas en El Paso (UTEP), se enorgullecen en anunciar un magno concierto de gala que reafirma el poder de la música como vehículo de unión entre dos naciones.',
     },
+
     {
     'imagen': 'assets/images/osuach-utep-8dic-1920.jpg',
     'titulo': 'La OSUACH con la UTEP_3',
     'subtitulo': 'Symphony Orchestra en Chihuahua',
     'tituloEvento': 'Música entre dos naciones hermanas',
-    'fecha': 'UACH / Noviembre 28, 2024',
+    'fechaNews': 'UACH / Noviembre 28, 2024',
+    'fechaDateCard' : 'Martes, 3 de Diciembre',
+    'hora': '21:00 horas',
+    'lugar' : 'Teatro de los Héroes',
     'descripcion':
         'La Orquesta Sinfónica de la Universidad Autónoma de Chihuahua (UACH), en colaboración con la Orquesta Sinfónica de la Universidad de Texas en El Paso (UTEP), se enorgullecen en anunciar un magno concierto de gala que reafirma el poder de la música como vehículo de unión entre dos naciones.',
     },
+
     {
     'imagen': 'assets/images/osuach-utep-8dic-1920.jpg',
     'titulo': 'La OSUACH con la UTEP_4',
     'subtitulo': 'Symphony Orchestra en Chihuahua',
     'tituloEvento': 'Música entre dos naciones hermanas',
-    'fecha': 'UACH / Noviembre 28, 2024',
+    'fechaNews': 'UACH / Noviembre 28, 2024',
+    'fechaDateCard' : 'Martes, 3 de Diciembre',
+    'hora': '21:00 horas',
+    'lugar' : 'Teatro de los Héroes',
     'descripcion':
         'La Orquesta Sinfónica de la Universidad Autónoma de Chihuahua (UACH), en colaboración con la Orquesta Sinfónica de la Universidad de Texas en El Paso (UTEP), se enorgullecen en anunciar un magno concierto de gala que reafirma el poder de la música como vehículo de unión entre dos naciones.',
     },
+
     
   ];

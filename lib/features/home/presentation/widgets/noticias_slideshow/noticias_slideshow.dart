@@ -51,7 +51,7 @@ class _NoticiasSlideshowState extends State<NoticiasSlideshow> {
                       titulo: noticia['titulo']!,
                       subtitulo: noticia['subtitulo']!,
                       tituloEvento: noticia['tituloEvento']!,
-                      fecha: noticia['fecha']!,
+                      fecha: noticia['fechaNews']!,
                       descripcion: noticia['descripcion']!,
                     ),
                   );
