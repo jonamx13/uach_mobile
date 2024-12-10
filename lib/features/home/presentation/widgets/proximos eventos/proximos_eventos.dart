@@ -3,6 +3,7 @@ import 'button_proximos_eventos.dart';
 import 'date_card.dart';
 import '../../data/noticias_data.dart';
 import '../../data/calendario_data.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Importar flutter_svg
 
 class ProximosEventos extends StatefulWidget {
   const ProximosEventos({Key? key}) : super(key: key);
@@ -64,14 +65,18 @@ class _ProximosEventosState extends State<ProximosEventos> {
             children: [
               ButtonProximosEventos(
                 isActive: _isButton1Active,
-                icon: Icons.event,
+                iconPath: _isButton1Active
+                    ? 'assets/icons/calendar_Active.svg'
+                    : 'assets/icons/calendar_Inactive.svg', // Cambio dinámico
                 text: 'Calendario',
                 onTap: () => _toggleButton(1),
               ),
               const SizedBox(width: 20),
               ButtonProximosEventos(
                 isActive: _isButton2Active,
-                icon: Icons.schedule,
+                iconPath: _isButton2Active
+                    ? 'assets/icons/quaver_Active.svg'
+                    : 'assets/icons/quaver_Inactive.svg', // Cambio dinámico
                 text: 'Eventos',
                 onTap: () => _toggleButton(2),
               ),
