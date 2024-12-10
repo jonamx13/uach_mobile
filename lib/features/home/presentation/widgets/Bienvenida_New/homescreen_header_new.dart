@@ -11,11 +11,10 @@ class HomeScreenHeaderNew extends StatelessWidget {
     //Main Container
     return Container(
       width: double.infinity,
-      height: (mediaQuery.size.height - safeAreaHeight) / 8,
+      height: (mediaQuery.size.height - safeAreaHeight) / 7,
       child: Stack(
         children: [
           // Background
-          // White Gradient
           Positioned(
             bottom: 0, // Alineado al borde inferior
             child: Container(
@@ -34,7 +33,7 @@ class HomeScreenHeaderNew extends StatelessWidget {
             ),
           ),
 
-          //First Triangle
+          // First Triangle
           Positioned.fill(
             child: CustomPaint(
               painter: CustomRectanglePainter(inverted: true),
@@ -51,18 +50,17 @@ class HomeScreenHeaderNew extends StatelessWidget {
           // Contenido de la columna
           Column(
             children: [
-              // logo de la app centrado
+              // Logo de la app centrado (PNG)
               Align(
                 alignment: Alignment.center,
                 child: Container(
-                  width: 189,
-                  height: 44,
                   margin: EdgeInsets.only(top: 15, bottom: 30),
                   alignment: Alignment.center,
-                  color: Colors.grey,
-                  child: Text(
-                    'logo de la app',
-                    style: TextStyle(color: Colors.white),
+                  child: Image.asset(
+                    'assets/images/logo_uach_movil.png', // Ruta de la imagen PNG
+                    width: 200, // Ancho del logo
+                    height: 70, // Alto del logo
+                    fit: BoxFit.contain, // Ajuste para mantener la escala del PNG
                   ),
                 ),
               ),
@@ -88,29 +86,21 @@ class CustomRectanglePainter extends CustomPainter {
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter,
         colors: inverted
-        ? [lightColor,darkColor] // Colores invertidos
-        : [darkColor,lightColor], // Colores normales
+            ? [lightColor, darkColor] // Colores invertidos
+            : [darkColor, lightColor], // Colores normales
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
       ..style = PaintingStyle.fill;
 
     // Coordenadas
-      //Superiores
     final double vertex1X = 0;
     final double vertex1Y = 0;
     final double vertex2X = size.width;
     final double vertex2Y = 0;
-      //Inferiores
     final double vertex3X = 0;
-    final double vertex3Y = inverted
-                            ? size.height * 2/ 3
-                            : size.height;
-
+    final double vertex3Y = inverted ? size.height * 2 / 3 : size.height;
     final double vertex4X = size.width;
-    final double vertex4Y = inverted
-                            ? size.height
-                            : size.height * 2 / 3;
+    final double vertex4Y = inverted ? size.height : size.height * 2 / 3;
 
-    // Dibuja el rectángulo con gradiente usando Path
     final path = Path()
       ..moveTo(vertex1X, vertex1Y)
       ..lineTo(vertex2X, vertex2Y)
