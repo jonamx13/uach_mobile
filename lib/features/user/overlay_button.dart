@@ -1,41 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OverlayButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
-  final bool isCerrar; // Propiedad para verificar si es el botón CERRAR
+  final String iconPath;
 
   const OverlayButton({
     Key? key,
     required this.label,
     required this.onPressed,
-    this.isCerrar = false, // Por defecto no es el botón CERRAR
+    required this.iconPath,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isCerrar ? const Color(0xFF8B41BD) : const Color(0xFFD8E2FF),
-          foregroundColor: isCerrar ? Colors.white : const Color(0xFF401E57),
-          shape: isCerrar
-              ? const BeveledRectangleBorder() // Sin bordes redondeados para CERRAR
-              : RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+      height: 70,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFD8E2FF),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(10),
+          child: Row(
+            children: [
+              Container(
+                width: 70,
+                height: 70,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF362B3E),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
                 ),
-          padding: const EdgeInsets.symmetric(vertical: 15),
-        ),
-        onPressed: onPressed,
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-            fontSize: 32,
-            height: 1.25, // Interlineado de 40px
+                child: Center(
+                  child: SvgPicture.asset(
+                    iconPath,
+                    width: 40,
+                    height: 40,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                    color: Color(0xFF401E57),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

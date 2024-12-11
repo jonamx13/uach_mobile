@@ -25,7 +25,6 @@ class _MainScreenState extends State<MainScreen> {
     CampusScreen(),
     ExplorarScreen(),
     ReporteScreen(),
-    Container(), // Placeholder para el botón "Usuario"
   ];
 
   List<Widget> _visibleScreens = [];
