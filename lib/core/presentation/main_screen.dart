@@ -14,7 +14,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
-  bool _isOverlayVisible = false; // Para controlar la visibilidad del overlay
+  bool _isOverlayVisible = false;
+  bool _isMenuVisible = false; // Para controlar la visibilidad del menú desplegable
+  bool _isSearchVisible = false; // Para controlar la visibilidad de la barra de búsqueda
 
   final List<Widget> _allScreens = [
     HomeScreen(),
@@ -38,7 +40,8 @@ class _MainScreenState extends State<MainScreen> {
     if (index == 4) {
       // Si seleccionamos el botón de usuario, mostramos el overlay
       setState(() {
-        _isOverlayVisible = true;
+        _isOverlayVisible = !_isOverlayVisible;
+        if (_isMenuVisible) _isMenuVisible = false; // Cerrar menú si está abierto
       });
       return;
     }
@@ -77,6 +80,32 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  void _toggleMenu() {
+    setState(() {
+      _isMenuVisible = !_isMenuVisible;
+      if (_isOverlayVisible) _isOverlayVisible = false; // Cerrar overlay si está abierto
+    });
+  }
+
+  void _closeMenu() {
+    setState(() {
+      _isMenuVisible = false;
+    });
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _isSearchVisible = !_isSearchVisible;
+      if (_isMenuVisible) _isMenuVisible = false; // Cerrar menú si está abierto
+    });
+  }
+
+  void _closeSearch() {
+    setState(() {
+      _isSearchVisible = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,14 +118,99 @@ class _MainScreenState extends State<MainScreen> {
             itemBuilder: (context, index) => _visibleScreens[index],
           ),
           if (_isOverlayVisible)
-            UserOverlay(onDismiss: _hideOverlay), // Mostrar overlay solo cuando sea necesario
+            UserOverlay(onDismiss: _hideOverlay),
+          if (_isMenuVisible)
+            Positioned.fill(
+              child: Container(
+                color: Color(0xFFF0F6FD),
+                child: SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: Icon(Icons.close, color: Colors.black),
+                          onPressed: _closeMenu,
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: 10,
+                          itemBuilder: (context, index) => ListTile(
+                            title: Text('Botón ${index + 1}'),
+                            onTap: () {},
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          if (_isSearchVisible)
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 10,
+              left: 15,
+              right: 15,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Buscar...',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close, color: Colors.black),
+                      onPressed: _closeSearch,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 10,
+            right: 15,
+            child: Row(
+              children: [
+                if (!_isMenuVisible && !_isOverlayVisible && !_isSearchVisible)
+                  IconButton(
+                    icon: Icon(Icons.search, color: Colors.black),
+                    onPressed: _toggleSearch,
+                  ),
+                if (!_isMenuVisible && !_isOverlayVisible && !_isSearchVisible)
+                  SizedBox(width: 0),
+                if (!_isMenuVisible && !_isOverlayVisible && !_isSearchVisible)
+                  IconButton(
+                    icon: Icon(Icons.menu, color: Colors.black),
+                    onPressed: _toggleMenu,
+                  ),
+              ],
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onItemSelected: _onItemSelected,
         isOverlayVisible: _isOverlayVisible,
-        onDismissOverlay: _hideOverlay, // Pasa la función para cerrar el overlay
+        onDismissOverlay: _hideOverlay,
       ),
     );
   }
