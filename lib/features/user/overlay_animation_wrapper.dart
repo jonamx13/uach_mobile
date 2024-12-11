@@ -16,58 +16,47 @@ class OverlayAnimationWrapper extends StatefulWidget {
 }
 
 class _OverlayAnimationWrapperState extends State<OverlayAnimationWrapper> with TickerProviderStateMixin {
-  late AnimationController _fadeController;
-  late Animation<double> _fadeAnimation;
-
-  late AnimationController _slideController;
-  late Animation<Offset> _slideAnimation;
+  late final AnimationController _controller;
+  late final Animation<double> _fadeAnimation;
+  late final Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
-
-    _fadeController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 100),
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _fadeController,
-        curve: Curves.easeInOut,
-      ),
-    );
-
-    _slideController = AnimationController(
+    _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
 
+    _fadeAnimation = _createAnimation(begin: 0, end: 1);
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 3),
+      begin: const Offset(0, 3), // Fuera de la pantalla
       end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _slideController,
-        curve: Curves.easeInOut,
-        reverseCurve: Curves.easeInOut,
-      ),
-    );
+    ).animate(_animationCurve());
 
-    _fadeController.forward();
-    _slideController.forward();
+    _controller.forward();
+  }
+
+  Animation<double> _createAnimation({required double begin, required double end}) {
+    return Tween<double>(begin: begin, end: end).animate(_animationCurve());
+  }
+
+  CurvedAnimation _animationCurve() {
+    return CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+      reverseCurve: Curves.easeInOut,
+    );
   }
 
   @override
   void dispose() {
-    _fadeController.dispose();
-    _slideController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   void _dismissOverlay() {
-    _fadeController.reverse();
-    _slideController.reverse().then((_) {
+    _controller.reverse().then((_) {
       widget.onDismiss();
     });
   }
@@ -86,21 +75,25 @@ class _OverlayAnimationWrapperState extends State<OverlayAnimationWrapper> with 
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: widget.buttons
-                    .map((button) => SlideTransition(
-                          position: _slideAnimation,
-                          child: OverlayButton(
-                            label: button["label"]!,
-                            iconPath: button["iconPath"]!,
-                            onPressed: () {},
-                          ),
-                        ))
-                    .toList(),
+                children: _buildButtons(),
               ),
             ),
           ),
         );
       },
     );
+  }
+
+  List<Widget> _buildButtons() {
+    return widget.buttons
+        .map((button) => SlideTransition(
+              position: _slideAnimation,
+              child: OverlayButton(
+                label: button["label"]!,
+                iconPath: button["iconPath"]!,
+                onPressed: () {}, // Aquí puedes definir cada acción
+              ),
+            ))
+        .toList();
   }
 }
