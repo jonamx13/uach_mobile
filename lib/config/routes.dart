@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../features/home/presentation/home_screen.dart';
-import '../features/campus/presentation/campus_screen.dart';
-import '../features/explorar/presentation/explorar_screen.dart';
-import '../features/reporte/presentation/reporte_screen.dart';
+import '../features/home/home_screen.dart';
+import '../features/campus/campus_screen.dart';
+import '../features/explorar/explorar_screen.dart';
+import '../features/reporte/reporte_screen.dart';
 
 class AppRoutes {
   static const String home = '/';

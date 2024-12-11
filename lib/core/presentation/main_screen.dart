@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../features/home/presentation/home_screen.dart';
-import '../../features/campus/presentation/campus_screen.dart';
-import '../../features/explorar/presentation/explorar_screen.dart';
-import '../../features/reporte/presentation/reporte_screen.dart';
-import '../../features/user/presentation/user_overlay.dart';
+import '../../features/home/home_screen.dart';
+import '../../features/campus/campus_screen.dart';
+import '../../features/explorar/explorar_screen.dart';
+import '../../features/reporte/reporte_screen.dart';
+import '../../features/user/user_overlay.dart';
 import '../widgets/bottom_nav_bar.dart';
+import 'contacto_y_utilidades.dart';
+import 'search_bar_custom.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -120,70 +122,9 @@ class _MainScreenState extends State<MainScreen> {
           if (_isOverlayVisible)
             UserOverlay(onDismiss: _hideOverlay),
           if (_isMenuVisible)
-            Positioned.fill(
-              child: Container(
-                color: Color(0xFFF0F6FD),
-                child: SafeArea(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          icon: Icon(Icons.close, color: Colors.black),
-                          onPressed: _closeMenu,
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: 10,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text('Botón ${index + 1}'),
-                            onTap: () {},
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            ContactoYUtilidades(onClose: _closeMenu),
           if (_isSearchVisible)
-            Positioned(
-              top: MediaQuery.of(context).padding.top + 10,
-              left: 15,
-              right: 15,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 4,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Buscar...',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.close, color: Colors.black),
-                      onPressed: _closeSearch,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            SearchBarCustom(onClose: _closeSearch),
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             right: 15,
