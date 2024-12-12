@@ -17,8 +17,12 @@ class _MainScreenState extends State<MainScreen> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
   bool _isOverlayVisible = false;
-  bool _isMenuVisible = false; // Para controlar la visibilidad del menú desplegable
-  bool _isSearchVisible = false; // Para controlar la visibilidad de la barra de búsqueda
+  bool _isMenuVisible = false;
+  bool _isSearchVisible = false;
+  late FocusNode _searchFocusNode;
+  TextEditingController _searchController = TextEditingController();
+
+  final GlobalKey _bottomNavBarKey = GlobalKey();
 
   final List<Widget> _allScreens = [
     HomeScreen(),
@@ -29,25 +33,45 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> _visibleScreens = [];
 
+  // Calculamos la proporción de la altura para BottomNavBar
+  double _getBottomNavBarHeight(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double proportion = 72.0 / 812.0 ;  // Proporción de 72px sobre 812px de altura de pantalla
+    return screenHeight * proportion;  // Aplicamos la proporción
+  }
+
   @override
   void initState() {
     super.initState();
-    _visibleScreens = [_allScreens[_currentIndex]]; // Mostrar solo la actual al inicio
+    _searchFocusNode = FocusNode();
+    _visibleScreens = [_allScreens[_currentIndex]];
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    _searchController.dispose();
+    super.dispose();
   }
 
   void _onItemSelected(int index) {
     if (index == _currentIndex) return;
 
     if (index == 4) {
-      // Si seleccionamos el botón de usuario, mostramos el overlay
       setState(() {
         _isOverlayVisible = !_isOverlayVisible;
-        if (_isMenuVisible) _isMenuVisible = false; // Cerrar menú si está abierto
+        if (_isMenuVisible) _isMenuVisible = false;
       });
       return;
     }
 
-    // Cuando se hace tap en cualquier otro botón, ocultamos el overlay
+    // Cerrar SearchBar al cambiar de pantalla
+    if (_isSearchVisible) {
+      setState(() {
+        _isSearchVisible = false;
+      });
+    }
+
     if (_isOverlayVisible) {
       _hideOverlay();
     }
@@ -84,7 +108,7 @@ class _MainScreenState extends State<MainScreen> {
   void _toggleMenu() {
     setState(() {
       _isMenuVisible = !_isMenuVisible;
-      if (_isOverlayVisible) _isOverlayVisible = false; // Cerrar overlay si está abierto
+      if (_isOverlayVisible) _isOverlayVisible = false;
     });
   }
 
@@ -97,8 +121,14 @@ class _MainScreenState extends State<MainScreen> {
   void _toggleSearch() {
     setState(() {
       _isSearchVisible = !_isSearchVisible;
-      if (_isMenuVisible) _isMenuVisible = false; // Cerrar menú si está abierto
+      if (_isMenuVisible) _isMenuVisible = false;
     });
+
+    if (_isSearchVisible) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        FocusScope.of(context).requestFocus(_searchFocusNode);
+      });
+    }
   }
 
   void _closeSearch() {
@@ -109,21 +139,74 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double bottomNavBarHeight = _getBottomNavBarHeight(context); // Calculamos la altura
+
     return Scaffold(
       body: Stack(
         children: [
-          PageView.builder(
-            controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: _visibleScreens.length,
-            itemBuilder: (context, index) => _visibleScreens[index],
+          GestureDetector(
+            onTap: () {
+              // Cerrar SearchBar cuando se toque fuera de él, pero no desactivar botones del BottomNavBar
+              if (_isSearchVisible) {
+                FocusScope.of(context).unfocus();
+                _closeSearch();
+              }
+            },
+            child: PageView.builder(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _visibleScreens.length,
+              itemBuilder: (context, index) => _visibleScreens[index],
+            ),
           ),
           if (_isOverlayVisible)
-            UserOverlay(onDismiss: _hideOverlay),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: bottomNavBarHeight, // Respetamos la altura del BottomNavBar
+              child: UserOverlay(onDismiss: _hideOverlay),
+            ),
+
+          // Bottom Navigation Bar dentro del Stack para que se superponga al contenido
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: BottomNavBar(
+              key: _bottomNavBarKey,
+              currentIndex: _currentIndex,
+              onItemSelected: _onItemSelected,
+              isOverlayVisible: _isOverlayVisible,
+              onDismissOverlay: _hideOverlay,
+              height: bottomNavBarHeight,  // Pasamos la altura dinámica al BottomNavBar
+            ),
+          ),
+
+          // Aquí el widget ContactoYUtilidades ocupa toda la pantalla (sin sobrepasar la SafeArea)
           if (_isMenuVisible)
-            ContactoYUtilidades(onClose: _closeMenu),
+            Positioned.fill(
+              child: Material(
+                color: Colors.transparent, // Sin fondo, solo cubriendo
+                child: SafeArea(
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ContactoYUtilidades(onClose: _closeMenu),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          
           if (_isSearchVisible)
-            SearchBarCustom(onClose: _closeSearch),
+            SearchBarCustom(
+              onClose: _closeSearch,
+              focusNode: _searchFocusNode,
+              controller: _searchController,
+            ),
+          
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             right: 15,
@@ -145,12 +228,6 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onItemSelected: _onItemSelected,
-        isOverlayVisible: _isOverlayVisible,
-        onDismissOverlay: _hideOverlay,
       ),
     );
   }

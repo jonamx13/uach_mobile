@@ -5,6 +5,7 @@ class BottomNavBar extends StatelessWidget {
   final Function(int) onItemSelected;
   final bool isOverlayVisible;
   final VoidCallback onDismissOverlay;
+  final double height;
 
   const BottomNavBar({
     Key? key,
@@ -12,6 +13,7 @@ class BottomNavBar extends StatelessWidget {
     required this.onItemSelected,
     required this.isOverlayVisible,
     required this.onDismissOverlay,
+    required this.height
   }) : super(key: key);
 
   @override
@@ -25,7 +27,7 @@ class BottomNavBar extends StatelessWidget {
     ];
 
     return Container(
-      height: 72,
+      height: height,
       color: const Color(0xFF463868),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -43,9 +45,7 @@ class BottomNavBar extends StatelessWidget {
                 Icon(
                   item['icon'],
                   size: 24,
-                  color: isSelected
-                      ? Colors.white
-                      : const Color(0xFF7E7F7D),
+                  color: isSelected ? Colors.white : const Color(0xFF7E7F7D),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -54,9 +54,7 @@ class BottomNavBar extends StatelessWidget {
                     fontFamily: 'Montserrat Alternates',
                     fontWeight: FontWeight.w900,
                     fontSize: 10,
-                    color: isSelected
-                        ? Colors.white
-                        : const Color(0xFF7E7F7D),
+                    color: isSelected ? Colors.white : const Color(0xFF7E7F7D),
                   ),
                 ),
               ],
