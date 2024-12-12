@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
   // Calculamos la proporción de la altura para BottomNavBar
   double _getBottomNavBarHeight(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double proportion = 72.0 / 812.0 ;  // Proporción de 72px sobre 812px de altura de pantalla
+    double proportion = 72.0 / 812.0;  // Proporción de 72px sobre 812px de altura de pantalla
     return screenHeight * proportion;  // Aplicamos la proporción
   }
 
@@ -156,7 +156,13 @@ class _MainScreenState extends State<MainScreen> {
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _visibleScreens.length,
-              itemBuilder: (context, index) => _visibleScreens[index],
+              itemBuilder: (context, index) {
+                // Usamos el Padding para dejar espacio por debajo del BottomNavBar
+                return Padding(
+                  padding: EdgeInsets.only(bottom: bottomNavBarHeight),
+                  child: _visibleScreens[index],
+                );
+              },
             ),
           ),
           if (_isOverlayVisible)
