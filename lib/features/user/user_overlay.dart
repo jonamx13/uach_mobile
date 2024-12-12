@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'overlay_button.dart';
 import 'overlay_animation_wrapper.dart';
 
 class UserOverlay extends StatelessWidget {
