@@ -49,8 +49,9 @@ class NoticiasCard extends StatelessWidget {
                   Text(
                     titulo,
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontFamily: 'DelaGothicOne',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
                       color: Colors.white,
                     ),
                   ),
@@ -58,8 +59,9 @@ class NoticiasCard extends StatelessWidget {
                   Text(
                     subtitulo,
                     style: TextStyle(
+                      fontFamily: 'DelaGothicOne',
                       fontSize: 15,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w400,
                       color: Colors.white,
                     ),
                   ),
