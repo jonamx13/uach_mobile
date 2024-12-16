@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import '../features/home/home_screen.dart';
-import '../features/campus/campus_screen.dart';
-import '../features/explorar/explorar_screen.dart';
-import '../features/reporte/reporte_screen.dart';
+import '../features/directorio/directorio_screen.dart';
+import '../features/mapa/mapa_screen.dart';
+import '../features/ayuda/ayuda_screen.dart';
 
 class AppRoutes {
   static const String home = '/';
-  static const String campus = '/campus';
-  static const String explorar = '/explorar';
-  static const String reporte = '/reporte';
+  static const String directorio = '/directorio';
+  static const String mapa = '/mapa';
+  static const String ayuda = '/ayuda';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case home:
         return MaterialPageRoute(builder: (_) => HomeScreen());
-      case campus:
-        return MaterialPageRoute(builder: (_) => CampusScreen());
-      case explorar:
-        return MaterialPageRoute(builder: (_) => ExplorarScreen());
-      case reporte:
-        return MaterialPageRoute(builder: (_) => ReporteScreen());
+      case directorio:
+        return MaterialPageRoute(builder: (_) => DirectorioScreen());
+      case mapa:
+        return MaterialPageRoute(builder: (_) => MapaScreen());
+      case ayuda:
+        return MaterialPageRoute(builder: (_) => AyudaScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

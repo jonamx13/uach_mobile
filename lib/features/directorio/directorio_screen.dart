@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MapScreen extends StatelessWidget {
+class DirectorioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Mapa', style: TextStyle(fontSize: 24)),
+        child: Text('Directorio', style: TextStyle(fontSize: 24)),
       ),
     );
   }

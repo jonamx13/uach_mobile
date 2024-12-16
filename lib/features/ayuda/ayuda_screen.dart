@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ReporteScreen extends StatefulWidget {
+class AyudaScreen extends StatefulWidget {
   @override
-  _ReporteScreenState createState() => _ReporteScreenState();
+  _AyudaScreenState createState() => _AyudaScreenState();
 }
 
-class _ReporteScreenState extends State<ReporteScreen> {
+class _AyudaScreenState extends State<AyudaScreen> {
   String? _selectedTipoIncidencia;
 
   // Controladores de los campos de texto
