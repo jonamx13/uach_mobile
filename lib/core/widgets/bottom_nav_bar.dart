@@ -6,6 +6,7 @@ class BottomNavBar extends StatelessWidget {
   final bool isOverlayVisible;
   final VoidCallback onDismissOverlay;
   final double height;
+  final List<Map<String, dynamic>> items;  // Recibimos la lista de items como parámetro
 
   const BottomNavBar({
     Key? key,
@@ -13,34 +14,23 @@ class BottomNavBar extends StatelessWidget {
     required this.onItemSelected,
     required this.isOverlayVisible,
     required this.onDismissOverlay,
-    required this.height
+    required this.height,
+    required this.items, // Recibimos la lista
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> items = [
-      {'label': 'Home', 'icon': Icons.home},
-      {'label': 'Campus', 'icon': Icons.school},
-      {'label': 'Explorar', 'icon': Icons.explore},
-      {'label': 'Reporte', 'icon': Icons.report},
-      {'label': 'Usuario', 'icon': Icons.person},
-    ];
-
-    // Altura de la imagen del cintillo
-    double cintilloHeight = 10.0;  // Ajusta este valor si la imagen tiene otra altura
-    double adjustedHeight = height - cintilloHeight; // Restamos la altura de la imagen
+    double cintilloHeight = 10.0;
+    double adjustedHeight = height - cintilloHeight;
 
     return Column(
       children: [
-        // Cintillo con la imagen
         Image.asset(
           'assets/images/cintillo_facultades.png',
           width: MediaQuery.of(context).size.width,
           height: cintilloHeight,
           fit: BoxFit.cover,
         ),
-
-        // Container debajo de la imagen
         Container(
           height: adjustedHeight,
           color: const Color(0xFF463868),
