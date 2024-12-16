@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../features/home/home_screen.dart';
-import '../../features/campus/campus_screen.dart';
-import '../../features/explorar/explorar_screen.dart';
-import '../../features/reporte/reporte_screen.dart';
 import '../../features/user/user_overlay.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'contacto_y_utilidades.dart';
@@ -181,7 +177,50 @@ class _MainScreenState extends State<MainScreen> {
               items: _bottomNavItems, // Pasamos todos los ítems
             ),
           ),
-          // Otros widgets originales permanecen iguales
+
+          // Aquí el widget ContactoYUtilidades ocupa toda la pantalla (sin sobrepasar la SafeArea)
+          if (_isMenuVisible)
+            Positioned.fill(
+              child: Material(
+                color: Colors.transparent, // Sin fondo, solo cubriendo
+                child: SafeArea(
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ContactoYUtilidades(onClose: _closeMenu),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            if (_isSearchVisible)
+            SearchBarCustom(
+              onClose: _closeSearch,
+              focusNode: _searchFocusNode,
+              controller: _searchController,
+            ),
+          
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 10,
+            right: 15,
+            child: Row(
+              children: [
+                if (!_isMenuVisible && !_isOverlayVisible && !_isSearchVisible)
+                  IconButton(
+                    icon: Icon(Icons.search, color: Colors.black),
+                    onPressed: _toggleSearch,
+                  ),
+                if (!_isMenuVisible && !_isOverlayVisible && !_isSearchVisible)
+                  SizedBox(width: 0),
+                if (!_isMenuVisible && !_isOverlayVisible && !_isSearchVisible)
+                  IconButton(
+                    icon: Icon(Icons.menu, color: Colors.black),
+                    onPressed: _toggleMenu,
+                  ),
+              ],
+            ),
+          ),
         ],
       ),
     );
