@@ -12,8 +12,9 @@ class UserOverlay extends StatelessWidget {
       {"label": "SEGA", "iconPath": "assets/icons/sega.svg"},
       {"label": "Campus Virtual", "iconPath": "assets/icons/campus_virtual.svg"},
       {"label": "Eventos deportivos", "iconPath": "assets/icons/eventos_deportivos.svg"},
-      {"label": "Trámites", "iconPath": "assets/icons/tramites.svg"},
+      {"label": "Fichas de adminisión", "iconPath": "assets/icons/fichas_admision.svg"},
       {"label": "Pagos", "iconPath": "assets/icons/pagos.svg"},
+      {"label": "Productos", "iconPath": "assets/icons/productos.svg"},
     ];
 
     return OverlayAnimationWrapper(

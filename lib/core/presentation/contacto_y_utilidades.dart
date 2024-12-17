@@ -112,6 +112,8 @@ class _ContactoYUtilidadesState extends State<ContactoYUtilidades> with SingleTi
                             {'title': 'Bolsa de trabajo', 'icon': 'bolsa_de_trabajo.svg'},
                             {'title': 'Diplomado en idiomas', 'icon': 'diplomado_en_idiomas.svg'},
                             {'title': 'Becas', 'icon': 'becas.svg'},
+                            {'title': 'Egresados', 'icon': 'egresados.svg'},
+                            {'title': 'Validar credencial', 'icon': 'validar_credencial.svg'},
                           ]),
                           // Sección "Redes Sociales"
                           Padding(
