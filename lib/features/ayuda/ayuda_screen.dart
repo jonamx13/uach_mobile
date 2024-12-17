@@ -5,14 +5,43 @@ class AyudaScreen extends StatefulWidget {
   _AyudaScreenState createState() => _AyudaScreenState();
 }
 
-class _AyudaScreenState extends State<AyudaScreen> {
+class _AyudaScreenState extends State<AyudaScreen> with TickerProviderStateMixin {
   String? _selectedTipoIncidencia;
-
-  // Controladores de los campos de texto
   final TextEditingController _detalleController = TextEditingController();
+  bool _isDropdownOpen = false;
+  late AnimationController _animationController;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Controlador de animación
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
+
+    // Animación de deslizamiento hacia abajo
+    _slideAnimation = Tween<Offset>(
+      begin: Offset(0, -0.3), // Empieza ligeramente arriba del contenedor
+      end: Offset(0, 0), // Se mueve a la posición final
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    double containerWidth = MediaQuery.of(context).size.width - 64; // Ancho del contenedor
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -61,29 +90,104 @@ class _AyudaScreenState extends State<AyudaScreen> {
               ),
               // Menú desplegable "Tipo de incidencia"
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
-                child: DropdownButton<String>(
-                  value: _selectedTipoIncidencia,
-                  hint: Text(
-                    'Selecciona el tipo de incidencia',
-                    style: TextStyle(color: Color(0xFFB0B0B0)), // Gris para el texto por defecto
-                  ),
-                  onChanged: (String? newValue) {
+                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 0.0), // Eliminar padding vertical
+                child: GestureDetector(
+                  onTap: () {
                     setState(() {
-                      _selectedTipoIncidencia = newValue;
+                      _isDropdownOpen = !_isDropdownOpen;
+                      if (_isDropdownOpen) {
+                        _animationController.forward();
+                      } else {
+                        _animationController.reverse();
+                      }
                     });
                   },
-                  isExpanded: true,
-                  items: <String>['tipo 1', 'tipo 2', 'tipo 3', 'tipo 4']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  dropdownColor: Color(0xFFD8E2FF), // Color de fondo del desplegable
-                  style: TextStyle(color: Color(0xFF8B41BD)), // Color de los items
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: _isDropdownOpen ? Color(0xFF767E94) : Colors.white,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                    width: containerWidth, // Usamos el ancho fijo
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _selectedTipoIncidencia ??
+                              'Selecciona el tipo de incidencia',
+                          style: TextStyle(
+                            color: _isDropdownOpen ? Colors.white : Color(0xFF8B41BD),
+                          ),
+                        ),
+                        Icon(
+                          _isDropdownOpen
+                              ? Icons.arrow_drop_up
+                              : Icons.arrow_drop_down,
+                          color: _isDropdownOpen ? Colors.white : Color(0xFF8B41BD),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
+              ),
+              // Usamos un Stack para que el Dropdown se superponga sobre el TextField
+              Stack(
+                children: [
+                  // Dropdown animado
+                  AnimatedBuilder(
+                    animation: _animationController,
+                    builder: (context, child) {
+                      return SlideTransition(
+                        position: _slideAnimation,
+                        child: _isDropdownOpen
+                            ? Container(
+                                width: containerWidth,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  children: <String>[
+                                    'Problema con las plataformas virtuales',
+                                    'Emergencia médica',
+                                    'Peligro de inseguridad',
+                                    'Asistencia mecánica',
+                                    'Violencia de género'
+                                  ].map((String item) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _selectedTipoIncidencia = item;
+                                          _isDropdownOpen = false; // Cerrar el dropdown al seleccionar
+                                          _animationController.reverse();
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                                        color: _selectedTipoIncidencia == item
+                                            ? Color(0xFF767E94)
+                                            : Colors.white,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft, // Alinea el texto hacia la izquierda
+                                          child: Text(
+                                            item,
+                                            style: TextStyle(
+                                              color: _selectedTipoIncidencia == item
+                                                  ? Colors.white
+                                                  : Color(0xFF8B41BD),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            : SizedBox.shrink(), // Si está cerrado, no ocupa espacio
+                      );
+                    },
+                  ),
+                ],
               ),
               // Título "Proporciona detalles"
               Padding(
@@ -103,8 +207,8 @@ class _AyudaScreenState extends State<AyudaScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFFD8E2FF), // Establecemos el color de fondo
-                    borderRadius: BorderRadius.zero, // Sin bordes redondeados
+                    color: Color(0xFFD8E2FF),
+                    borderRadius: BorderRadius.zero,
                   ),
                   child: TextField(
                     controller: _detalleController,
@@ -113,7 +217,7 @@ class _AyudaScreenState extends State<AyudaScreen> {
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(16.0),
                       hintText: 'Escribe aquí los detalles que puedan ayudarnos a manejar tu incidente',
-                      hintStyle: TextStyle(color: Color(0xFFB0B0B0)), // Gris para el texto por defecto
+                      hintStyle: TextStyle(color: Color(0xFFB0B0B0)),
                     ),
                   ),
                 ),
