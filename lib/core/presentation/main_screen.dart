@@ -228,7 +228,7 @@ class _MainScreenState extends State<MainScreen> {
 
   double _getBottomNavBarHeight(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double proportion = 72.0 / 812.0;
+    double proportion = 80.0 / 812.0;
     return screenHeight * proportion;
   }
 }

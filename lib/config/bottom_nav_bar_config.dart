@@ -8,17 +8,17 @@ import '../features/user/user_overlay.dart';
 class BottomNavBarConfig {
   static List<Map<String, dynamic>> getItems(Function(int) onItemSelected) {
     return [
-      {'label': 'Inicio', 'icon': Icons.home, 'action': () => onItemSelected(0), 'screen': HomeScreen()},
-      {'label': 'Mapa', 'icon': Icons.explore, 'action': () => onItemSelected(2), 'screen': MapaScreen()},
+      {'label': 'Inicio', 'icon': 'assets/icons/nav_bar/inicio_icon.svg', 'action': () => onItemSelected(0), 'screen': HomeScreen()},
+      {'label': 'Mapa', 'icon': 'assets/icons/nav_bar/mapa_icon.svg', 'action': () => onItemSelected(2), 'screen': MapaScreen()},
       {
         'label': 'Usuario',
-        'icon': Icons.person,
+        'icon': 'rotating_icon',
         'action': () => onItemSelected(4),
         'screen': UserOverlay,
         'excludeFromNavigation': true, // Marcar como excluido
       },
-      {'label': 'Ayuda', 'icon': Icons.report, 'action': () => onItemSelected(3), 'screen': AyudaScreen()},
-      {'label': 'Directorio', 'icon': Icons.school, 'action': () => onItemSelected(1), 'screen': DirectorioScreen()},
+      {'label': 'Ayuda', 'icon': 'assets/icons/nav_bar/ayuda_icon.svg', 'action': () => onItemSelected(3), 'screen': AyudaScreen()},
+      {'label': 'Directorio', 'icon': 'assets/icons/nav_bar/directorio_icon.svg', 'action': () => onItemSelected(1), 'screen': DirectorioScreen()},
     ];
   }
 }
