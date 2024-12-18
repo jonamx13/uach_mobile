@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './widgets/tipo_de_incidencia.dart';
+import 'widgets/tipo_incidencia/tipo_de_incidencia.dart';
 import './widgets/detalles_incidencia.dart';
 import './widgets/enviar_reporte.dart';
 
