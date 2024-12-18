@@ -38,7 +38,7 @@ class _AyudaScreenState extends State<AyudaScreen> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
+                padding: const EdgeInsets.only(top: 52.0, bottom: 16.0),
                 child: Center(
                   child: Text(
                     'Reportar incidencia',
