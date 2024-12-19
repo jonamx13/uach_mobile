@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AgenteAI extends StatelessWidget {
   @override
@@ -64,12 +65,11 @@ class AgenteAI extends StatelessWidget {
               width: 20,
             ),
           ),
-          // Icono a la derecha, centrado en el espacio restante
-          Center(
-            child: Icon(
-              Icons.comment_rounded, // Ícono de globo de texto
-              color: Color(0xFF362B3E), // Color del ícono
-              size: 24, // Tamaño del ícono
+          // Expanded para el icono SVG que ocupará el espacio restante
+          Expanded(
+            child: SvgPicture.asset(
+              'assets/icons/chatAI.svg',
+              fit: BoxFit.contain, // Ajusta el SVG al espacio disponible sin deformarlo
             ),
           ),
         ],
