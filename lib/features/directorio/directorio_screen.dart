@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './widgets/directorio_card.dart';
 import './data/directorio_data.dart';
+import './widgets/agenteAI.dart';
 
 class DirectorioScreen extends StatelessWidget {
   @override
@@ -59,6 +60,26 @@ class DirectorioScreen extends StatelessWidget {
                 ),
               ),
             ),
+            Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+              '¿Tiene una pregunta?',
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+                height: 16.25 / 13, // Line height
+                color: Color(0xFF0E1016),
+              ),
+            ),
+            SizedBox(height: 10),
+         AgenteAI(),
+            ]
+          ),
+        ),
           ],
         ),
       ),
