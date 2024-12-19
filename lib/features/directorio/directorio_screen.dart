@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './widgets/directorio_card.dart';
+import './data/directorio_data.dart';
 
 class DirectorioScreen extends StatelessWidget {
   @override
@@ -31,6 +33,23 @@ class DirectorioScreen extends StatelessWidget {
                     image: AssetImage('assets/images/rectoria_photo.png'),
                     fit: BoxFit.cover,
                   ),
+                ),
+              ),
+              // Aquí mapeamos los datos y pasamos cada grupo al DirectorioCard
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: directorioData.map((directorioGrupo) {
+                    return Column(
+                      children: [
+                        DirectorioCard(
+                          titulo: directorioGrupo['directorio'], 
+                          contactos: List<Map<String, String>>.from(directorioGrupo['lista_contactos']),
+                        ),
+                      ],
+                    );
+                  }).toList(),
                 ),
               ),
             ],
