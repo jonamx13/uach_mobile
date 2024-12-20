@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
-class FacultadButton extends StatelessWidget {
-  final String selectedFacultad;
+class FacultadDropdownButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String selectedFacultad;
 
-  FacultadButton({required this.selectedFacultad, required this.onPressed});
+  const FacultadDropdownButton({
+    Key? key,
+    required this.onPressed,
+    required this.selectedFacultad,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: TextButton(
-        onPressed: onPressed,  // Acción al presionar el botón
+        onPressed: onPressed,
         child: Text(
           selectedFacultad,
           style: TextStyle(
