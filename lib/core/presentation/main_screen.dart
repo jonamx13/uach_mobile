@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../features/user/user_overlay.dart';
+import 'evento_proximo_overlay.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'contacto_y_utilidades.dart';
 import 'search_bar_custom.dart';
 import '../../config/bottom_nav_bar_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   bool _isOverlayVisible = false;
   bool _isMenuVisible = false;
   bool _isSearchVisible = false;
+  bool _isFirstTimeOverlayVisible = false;
   late FocusNode _searchFocusNode;
   TextEditingController _searchController = TextEditingController();
 
@@ -37,6 +40,24 @@ class _MainScreenState extends State<MainScreen> {
         .where((item) => !(item['excludeFromNavigation'] ?? false))
         .map((item) => item['screen'] as Widget)
         .toList();
+
+    // Verificar si ya se mostró el overlay de EventoProximo antes
+    _checkFirstTimeForEventoProximo();
+  }
+
+  Future<void> _checkFirstTimeForEventoProximo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstTime = prefs.getBool('isFirstTimeEventoProximo') ?? true;
+
+    if (isFirstTime) {
+      // Mostrar el EventoProximoOverlay
+      setState(() {
+        _isFirstTimeOverlayVisible = true;
+      });
+
+      // Marcar como ya mostrado
+      await prefs.setBool('isFirstTimeEventoProximo', false);
+    }
   }
 
   @override
@@ -49,7 +70,6 @@ class _MainScreenState extends State<MainScreen> {
   void _onItemSelected(int index) {
     if (index == _currentIndex) return;
 
-    // Lógica especial para "Usuario" (índice dinámico)
     if (_bottomNavItems[index]['label'] == 'Usuario') {
       setState(() {
         _isOverlayVisible = !_isOverlayVisible;
@@ -72,17 +92,25 @@ class _MainScreenState extends State<MainScreen> {
 
     setState(() {
       _visibleScreens = isForward
-          ? [_bottomNavItems[_currentIndex]['screen'], _bottomNavItems[index]['screen']]
-          : [_bottomNavItems[index]['screen'], _bottomNavItems[_currentIndex]['screen']];
+          ? [
+              _bottomNavItems[_currentIndex]['screen'],
+              _bottomNavItems[index]['screen']
+            ]
+          : [
+              _bottomNavItems[index]['screen'],
+              _bottomNavItems[_currentIndex]['screen']
+            ];
     });
 
     _pageController.jumpToPage(isForward ? 0 : 1);
 
-    _pageController.animateToPage(
+    _pageController
+        .animateToPage(
       isForward ? 1 : 0,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
-    ).then((_) {
+    )
+        .then((_) {
       setState(() {
         _currentIndex = index;
         _visibleScreens = [_bottomNavItems[_currentIndex]['screen']];
@@ -94,6 +122,8 @@ class _MainScreenState extends State<MainScreen> {
   void _hideOverlay() {
     setState(() {
       _isOverlayVisible = false;
+      _isFirstTimeOverlayVisible =
+          false; // Asegura que se oculte el overlay inicial.
     });
   }
 
@@ -155,13 +185,24 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
           ),
+          if (_isFirstTimeOverlayVisible)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: bottomNavBarHeight,
+              child: EventoProximoOverlay(
+                  onDismiss: _hideOverlay), // Overlay inicial
+            ),
           if (_isOverlayVisible)
             Positioned(
               top: 0,
               left: 0,
               right: 0,
               bottom: bottomNavBarHeight,
-              child: UserOverlay(onDismiss: _hideOverlay),
+              child: UserOverlay(
+                  onDismiss:
+                      _hideOverlay), // Mantiene el UserOverlay independiente
             ),
           Positioned(
             bottom: 0,
@@ -174,15 +215,13 @@ class _MainScreenState extends State<MainScreen> {
               isOverlayVisible: _isOverlayVisible,
               onDismissOverlay: _hideOverlay,
               height: bottomNavBarHeight,
-              items: _bottomNavItems, // Pasamos todos los ítems
+              items: _bottomNavItems,
             ),
           ),
-
-          // Aquí el widget ContactoYUtilidades ocupa toda la pantalla (sin sobrepasar la SafeArea)
           if (_isMenuVisible)
             Positioned.fill(
               child: Material(
-                color: Colors.transparent, // Sin fondo, solo cubriendo
+                color: Colors.transparent,
                 child: SafeArea(
                   child: Stack(
                     children: [
@@ -194,13 +233,12 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
-            if (_isSearchVisible)
+          if (_isSearchVisible)
             SearchBarCustom(
               onClose: _closeSearch,
               focusNode: _searchFocusNode,
               controller: _searchController,
             ),
-          
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             right: 15,
